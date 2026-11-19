@@ -1,0 +1,102 @@
+{"category": "write/ddl", "expect": "block", "sql": "DROP TABLE orders"}
+{"category": "write/ddl", "expect": "block", "sql": "DELETE FROM orders"}
+{"category": "write/ddl", "expect": "block", "sql": "UPDATE orders SET total_inr=0"}
+{"category": "write/ddl", "expect": "block", "sql": "INSERT INTO orders VALUES (1,1,'2025-01-01','delivered','UPI','Pune',0,1)"}
+{"category": "write/ddl", "expect": "block", "sql": "CREATE TABLE x(a)"}
+{"category": "write/ddl", "expect": "block", "sql": "ALTER TABLE orders ADD COLUMN z"}
+{"category": "write/ddl", "expect": "block", "sql": "REPLACE INTO products VALUES (1,'a','b',1,1)"}
+{"category": "write/ddl", "expect": "block", "sql": "TRUNCATE TABLE orders"}
+{"category": "write/ddl", "expect": "block", "sql": "DROP VIEW v"}
+{"category": "write/ddl", "expect": "block", "sql": "CREATE INDEX i ON orders(status)"}
+{"category": "stacked", "expect": "block", "sql": "SELECT 1; DROP TABLE orders"}
+{"category": "stacked", "expect": "block", "sql": "SELECT COUNT(*) FROM orders; DELETE FROM orders"}
+{"category": "stacked", "expect": "block", "sql": "SELECT 1;SELECT 2"}
+{"category": "stacked", "expect": "block", "sql": "SELECT 1; -- ok\nUPDATE orders SET status='x'"}
+{"category": "stacked", "expect": "block", "sql": "SELECT * FROM orders LIMIT 1; PRAGMA writable_schema=1"}
+{"category": "select-shaped write", "expect": "block", "sql": "WITH x AS (SELECT 1) DELETE FROM orders"}
+{"category": "select-shaped write", "expect": "block", "sql": "WITH x AS (SELECT 1) INSERT INTO orders SELECT * FROM orders"}
+{"category": "select-shaped write", "expect": "block", "sql": "SELECT * INTO backup FROM orders"}
+{"category": "select-shaped write", "expect": "block", "sql": "WITH x AS (SELECT * FROM orders) UPDATE orders SET status='a'"}
+{"category": "engine command", "expect": "block", "sql": "PRAGMA table_info(orders)"}
+{"category": "engine command", "expect": "block", "sql": "PRAGMA writable_schema=1"}
+{"category": "engine command", "expect": "block", "sql": "ATTACH DATABASE '/tmp/x.db' AS x"}
+{"category": "engine command", "expect": "block", "sql": "DETACH DATABASE x"}
+{"category": "engine command", "expect": "block", "sql": "VACUUM"}
+{"category": "engine command", "expect": "block", "sql": "VACUUM INTO '/tmp/x.db'"}
+{"category": "engine command", "expect": "block", "sql": "BEGIN"}
+{"category": "engine command", "expect": "block", "sql": "COMMIT"}
+{"category": "engine command", "expect": "block", "sql": "REINDEX"}
+{"category": "engine command", "expect": "block", "sql": "ANALYZE"}
+{"category": "engine command", "expect": "block", "sql": "EXPLAIN SELECT * FROM orders"}
+{"category": "engine command", "expect": "block", "sql": "SET x=1"}
+{"category": "system table", "expect": "block", "sql": "SELECT * FROM sqlite_master"}
+{"category": "system table", "expect": "block", "sql": "SELECT name FROM sqlite_schema"}
+{"category": "system table", "expect": "block", "sql": "SELECT * FROM sqlite_temp_master"}
+{"category": "system table", "expect": "block", "sql": "SELECT * FROM main.orders"}
+{"category": "system table", "expect": "block", "sql": "SELECT * FROM temp.orders"}
+{"category": "system table", "expect": "block", "sql": "SELECT * FROM main.sqlite_master"}
+{"category": "system table", "expect": "block", "sql": "SELECT * FROM \"sqlite_master\""}
+{"category": "system table", "expect": "block", "sql": "SELECT * FROM SQLITE_MASTER"}
+{"category": "system table", "expect": "block", "sql": "SELECT * FROM sqlite_sequence"}
+{"category": "system table", "expect": "block", "sql": "SELECT * FROM sqlite_stat1"}
+{"category": "function", "expect": "block", "sql": "SELECT * FROM pragma_table_info('orders')"}
+{"category": "function", "expect": "block", "sql": "SELECT * FROM pragma_database_list"}
+{"category": "function", "expect": "block", "sql": "SELECT * FROM json_each('[1]')"}
+{"category": "function", "expect": "block", "sql": "SELECT load_extension('/tmp/x.so')"}
+{"category": "function", "expect": "block", "sql": "SELECT readfile('/etc/passwd')"}
+{"category": "function", "expect": "block", "sql": "SELECT writefile('/tmp/x','y')"}
+{"category": "function", "expect": "block", "sql": "SELECT randomblob(1000000000)"}
+{"category": "function", "expect": "block", "sql": "SELECT zeroblob(1000000000)"}
+{"category": "function", "expect": "block", "sql": "SELECT sqlite_version()"}
+{"category": "function", "expect": "block", "sql": "SELECT sqlite_compileoption_used('x')"}
+{"category": "function", "expect": "block", "sql": "SELECT fts3_tokenizer('x')"}
+{"category": "function", "expect": "block", "sql": "SELECT edit('x')"}
+{"category": "function", "expect": "block", "sql": "SELECT * FROM generate_series(1,1000000)"}
+{"category": "function", "expect": "block", "sql": "SELECT hex(randomblob(10))"}
+{"category": "unknown table", "expect": "block", "sql": "SELECT * FROM users"}
+{"category": "unknown table", "expect": "block", "sql": "SELECT * FROM payments"}
+{"category": "unknown table", "expect": "block", "sql": "SELECT * FROM orders o JOIN secrets s ON 1=1"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT email FROM customers"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT c.email FROM customers c"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT customers.email FROM customers"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT * FROM (SELECT email FROM customers)"}
+{"category": "restricted column", "expect": "block", "sql": "WITH c AS (SELECT email FROM customers) SELECT * FROM c"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT customer_id FROM customers WHERE email LIKE '%a%'"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT COUNT(*) FROM customers GROUP BY email"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT 1 FROM customers ORDER BY email"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT substr(email,1,3) FROM customers"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT o.order_id, c.email FROM orders o JOIN customers c ON c.customer_id=o.customer_id"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT EMAIL FROM CUSTOMERS"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT \"email\" FROM \"customers\""}
+{"category": "restricted column", "expect": "block", "sql": "SELECT city FROM customers UNION SELECT email FROM customers"}
+{"category": "restricted column", "expect": "block", "sql": "SELECT customer_id, (SELECT email FROM customers c2 WHERE c2.customer_id=c.customer_id) FROM customers c"}
+{"category": "resource", "expect": "block", "sql": "WITH RECURSIVE t(n) AS (SELECT 1 UNION ALL SELECT n+1 FROM t) SELECT n FROM t"}
+{"category": "resource", "expect": "block", "sql": "SELECT * FROM orders LIMIT (SELECT COUNT(*) FROM orders)"}
+{"category": "resource", "expect": "block", "sql": "SELECT * FROM orders LIMIT -1"}
+{"category": "malformed", "expect": "block", "sql": ""}
+{"category": "malformed", "expect": "block", "sql": "   "}
+{"category": "malformed", "expect": "block", "sql": "SELEC * FROM orders"}
+{"category": "malformed", "expect": "block", "sql": "SELECT FROM"}
+{"category": "malformed", "expect": "block", "sql": "'; DROP TABLE orders; --"}
+{"category": "malformed", "expect": "block", "sql": "SELECT * FROM orders WHERE"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT COUNT(*) FROM orders"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT * FROM customers LIMIT 5"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT status, COUNT(*) AS n FROM orders GROUP BY status ORDER BY n DESC"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT strftime('%Y-%m', order_date) AS m, SUM(total_inr) FROM orders WHERE status='delivered' GROUP BY m ORDER BY m"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT c.city, SUM(o.total_inr) FROM orders o JOIN customers c ON c.customer_id=o.customer_id GROUP BY c.city"}
+{"category": "legitimate", "expect": "allow", "sql": "WITH m AS (SELECT customer_id, SUM(total_inr) s FROM orders GROUP BY customer_id) SELECT * FROM m ORDER BY s DESC LIMIT 5"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT customer_id, ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date) AS rn FROM orders LIMIT 20"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT city FROM customers UNION SELECT delivery_city FROM orders"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT p.name, SUM(oi.quantity) FROM order_items oi JOIN products p ON p.product_id=oi.product_id GROUP BY p.product_id ORDER BY 2 DESC LIMIT 10"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT ROUND(AVG(total_inr),2) FROM orders WHERE order_date BETWEEN '2025-01-01' AND '2025-03-31'"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT CASE WHEN total_inr>5000 THEN 'high' ELSE 'low' END AS band, COUNT(*) FROM orders GROUP BY band"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT COUNT(*) FROM orders WHERE customer_id IN (SELECT customer_id FROM customers WHERE segment='premium')"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT COUNT(DISTINCT customer_id) FROM orders WHERE status IN ('delivered','shipped')"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT category, MIN(price_inr), MAX(price_inr), AVG(price_inr) FROM products GROUP BY category"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT * FROM returns ORDER BY refund_inr DESC LIMIT 3"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT COUNT(*) FROM customers WHERE city = 'Mumbai' AND segment <> 'new'"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT date(order_date, 'start of month') AS m, COUNT(*) FROM orders GROUP BY m"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT o.order_id FROM orders o LEFT JOIN returns r ON r.order_item_id = o.order_id WHERE r.return_id IS NULL LIMIT 5"}
+{"category": "legitimate", "expect": "allow", "sql": "select count(*) from orders;"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT COALESCE(discount_inr,0) FROM orders LIMIT 3"}
+{"category": "legitimate", "expect": "allow", "sql": "SELECT group_concat(DISTINCT payment_method) FROM orders"}
