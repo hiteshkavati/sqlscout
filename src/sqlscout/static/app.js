@@ -39,7 +39,7 @@
     if (columns.length !== 2 || rows.length < 2 || rows.length > 30) return null;
     if (!rows.every((r) => isNum(r[1]))) return null;
     const NS = "http://www.w3.org/2000/svg";
-    const rowH = 22, left = 150, width = 900, pad = 60;
+    const rowH = 22, left = 150, width = 900, pad = 110;
     const height = rows.length * rowH + 8;
     const max = Math.max(...rows.map((r) => r[1]), 1);
     const svg = document.createElementNS(NS, "svg");
