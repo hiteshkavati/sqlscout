@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQLScout</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <div>
+        <h1>SQLScout</h1>
+        <p class="tag">Ask a question, get guarded SQL and the numbers behind the answer.</p>
+      </div>
+      <p id="model" class="pill" hidden></p>
+    </div>
+    <nav class="wrap" role="tablist">
+      <button role="tab" data-tab="ask" aria-selected="true">Ask</button>
+      <button role="tab" data-tab="sql" aria-selected="false">SQL console</button>
+      <button role="tab" data-tab="schema" aria-selected="false">Schema</button>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section id="tab-ask">
+      <p id="ask-banner" class="notice" hidden></p>
+      <form id="ask-form">
+        <label for="question" class="sr">Question</label>
+        <textarea id="question" rows="2" maxlength="500"
+          placeholder="e.g. Which city has the most delivered revenue?"></textarea>
+        <button type="submit" id="ask-btn">Ask</button>
+      </form>
+      <div id="ask-chips" class="chips"></div>
+      <div id="ask-out"></div>
+    </section>
+
+    <section id="tab-sql" hidden>
+      <p class="hint">Every query goes through the same guard the agent uses. Try the buttons
+        under "Try to break it".</p>
+      <form id="sql-form">
+        <label for="sql" class="sr">SQL</label>
+        <textarea id="sql" rows="6" spellcheck="false" maxlength="4000"></textarea>
+        <button type="submit" id="sql-btn">Run</button>
+      </form>
+      <div class="chip-group"><span>Examples</span><div id="sql-chips" class="chips"></div></div>
+      <div class="chip-group"><span>Try to break it</span><div id="attack-chips" class="chips"></div></div>
+      <div id="sql-out"></div>
+    </section>
+
+    <section id="tab-schema" hidden>
+      <p class="hint" id="schema-note"></p>
+      <div id="schema-out"></div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    Synthetic data. Queries are read-only, limited to the tables and columns shown in Schema,
+    capped in rows and time.
+  </footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>
